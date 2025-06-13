@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 // Sample data
 const matches = [
   {
@@ -65,6 +68,33 @@ app.get('/teams/:id', (req, res) => {
     return res.status(404).json({ message: 'Team not found' });
   }
   res.json(team);
+});
+
+// POST new match
+app.post('/matches', (req, res) => {
+  const newMatch = {
+    match_id: matches.length + 1,
+    team_a: req.body.team_a,
+    team_b: req.body.team_b,
+    score_a: req.body.score_a,
+    score_b: req.body.score_b,
+    date: req.body.date
+  };
+  matches.push(newMatch);
+  res.status(201).json(newMatch);
+});
+
+// POST new team
+app.post('/teams', (req, res) => {
+  const newTeam = {
+    team_id: teams.length + 1,
+    name: req.body.name,
+    players: req.body.players,
+    wins: req.body.wins || 0,
+    losses: req.body.losses || 0
+  };
+  teams.push(newTeam);
+  res.status(201).json(newTeam);
 });
 
 app.listen(port, () => {
