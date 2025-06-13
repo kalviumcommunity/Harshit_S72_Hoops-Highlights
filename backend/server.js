@@ -97,6 +97,45 @@ app.post('/teams', (req, res) => {
   res.status(201).json(newTeam);
 });
 
+// PUT update match
+app.put('/matches/:id', (req, res) => {
+  const matchIndex = matches.findIndex(m => m.match_id === parseInt(req.params.id));
+  if (matchIndex === -1) {
+    return res.status(404).json({ message: 'Match not found' });
+  }
+
+  const updatedMatch = {
+    match_id: parseInt(req.params.id),
+    team_a: req.body.team_a || matches[matchIndex].team_a,
+    team_b: req.body.team_b || matches[matchIndex].team_b,
+    score_a: req.body.score_a || matches[matchIndex].score_a,
+    score_b: req.body.score_b || matches[matchIndex].score_b,
+    date: req.body.date || matches[matchIndex].date
+  };
+
+  matches[matchIndex] = updatedMatch;
+  res.json(updatedMatch);
+});
+
+// PUT update team
+app.put('/teams/:id', (req, res) => {
+  const teamIndex = teams.findIndex(t => t.team_id === parseInt(req.params.id));
+  if (teamIndex === -1) {
+    return res.status(404).json({ message: 'Team not found' });
+  }
+
+  const updatedTeam = {
+    team_id: parseInt(req.params.id),
+    name: req.body.name || teams[teamIndex].name,
+    players: req.body.players || teams[teamIndex].players,
+    wins: req.body.wins !== undefined ? req.body.wins : teams[teamIndex].wins,
+    losses: req.body.losses !== undefined ? req.body.losses : teams[teamIndex].losses
+  };
+
+  teams[teamIndex] = updatedTeam;
+  res.json(updatedTeam);
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
