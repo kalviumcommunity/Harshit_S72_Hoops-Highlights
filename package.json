@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@types/react-router-dom": "^5.3.3",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.4",
+    "react-router-dom": "^7.7.0"
+  }
+}
